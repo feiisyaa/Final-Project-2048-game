@@ -1,5 +1,5 @@
 package pkg2048game;
-
+import javax.swing.JOptionPane;
 import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
 public class Game extends javax.swing.JFrame {
@@ -8,6 +8,8 @@ public class Game extends javax.swing.JFrame {
     
     public Game() {
     initComponents();
+    setLocationRelativeTo(null);
+    gmOverPanel.setVisible(false);
     gameBoard = new GameBoard();
 
     updateBoard();
@@ -35,7 +37,51 @@ else {
     }
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Game.class.getName());
+    
+    private void setTileColor(JLabel label, int value) {
 
+    switch(value) {
+        case 0:
+            label.setBackground(new java.awt.Color(205, 193, 180));
+            break;
+        case 2:
+            label.setBackground(new java.awt.Color(238, 228, 218));
+            break;
+        case 4:
+            label.setBackground(new java.awt.Color(237, 224, 200));
+            break;
+        case 8:
+            label.setBackground(new java.awt.Color(242, 177, 121));
+            break;
+        case 16:
+            label.setBackground(new java.awt.Color(245, 149, 99));
+            break;
+        case 32:
+            label.setBackground(new java.awt.Color(246, 124, 95));
+            break;
+        case 64:
+            label.setBackground(new java.awt.Color(246, 94, 59));
+            break;
+        case 128:
+            label.setBackground(new java.awt.Color(237, 207, 114));
+            break;
+        case 256:
+            label.setBackground(new java.awt.Color(237, 204, 97));
+            break;
+        case 512:
+            label.setBackground(new java.awt.Color(237, 200, 80));
+            break;
+        case 1024:
+            label.setBackground(new java.awt.Color(237, 197, 63));
+            break;
+        case 2048:
+            label.setBackground(new java.awt.Color(237, 194, 46));
+            break;
+        default:
+            label.setBackground(new java.awt.Color(60, 58, 50));
+            break;
+    }}
+    
     private void updateBoard() {
 
     int[][] board = gameBoard.getBoard();
@@ -63,6 +109,8 @@ else {
     
                 );
             }
+            
+        setTileColor(labels[i][j], board[i][j]);
         }
     }
 
@@ -77,7 +125,7 @@ else {
     else if(gameBoard.isGameOver()) {
 
         lblStatus.setText("GAME OVER");
-
+        gmOverPanel.setVisible(true);
     }
 
     else {
@@ -106,11 +154,9 @@ else {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        infoPanel = new javax.swing.JPanel();
-        lblScore = new javax.swing.JLabel();
-        lblHighScore = new javax.swing.JLabel();
-        lblStatus = new javax.swing.JLabel();
-        btnRestart = new javax.swing.JButton();
+        gmOverPanel = new javax.swing.JPanel();
+        jlblGameOver = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         boardPanel = new javax.swing.JPanel();
         tile00 = new javax.swing.JLabel();
         tile01 = new javax.swing.JLabel();
@@ -128,6 +174,11 @@ else {
         tile31 = new javax.swing.JLabel();
         tile32 = new javax.swing.JLabel();
         tile33 = new javax.swing.JLabel();
+        infoPanel = new javax.swing.JPanel();
+        lblScore = new javax.swing.JLabel();
+        lblHighScore = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
+        btnRestart = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -136,50 +187,40 @@ else {
             }
         });
 
-        lblScore.setText("jLabel2");
+        jlblGameOver.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N
+        jlblGameOver.setText("GAME OVER");
 
-        lblHighScore.setText("jLabel3");
+        jButton1.setText("Try Again");
 
-        lblStatus.setText("jLabel1");
-        lblStatus.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-        btnRestart.setText("Restart");
-        btnRestart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRestartActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
-        infoPanel.setLayout(infoPanelLayout);
-        infoPanelLayout.setHorizontalGroup(
-            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(infoPanelLayout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(infoPanelLayout.createSequentialGroup()
-                        .addComponent(lblScore)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblHighScore)
-                        .addGap(65, 65, 65))
-                    .addGroup(infoPanelLayout.createSequentialGroup()
-                        .addComponent(lblStatus)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
-                        .addComponent(btnRestart)
-                        .addGap(44, 44, 44))))
+        javax.swing.GroupLayout gmOverPanelLayout = new javax.swing.GroupLayout(gmOverPanel);
+        gmOverPanel.setLayout(gmOverPanelLayout);
+        gmOverPanelLayout.setHorizontalGroup(
+            gmOverPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(gmOverPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(gmOverPanelLayout.createSequentialGroup()
+                    .addGap(103, 103, 103)
+                    .addComponent(jlblGameOver)
+                    .addContainerGap(105, Short.MAX_VALUE)))
+            .addGroup(gmOverPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(gmOverPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jButton1)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
-        infoPanelLayout.setVerticalGroup(
-            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(infoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblScore)
-                    .addComponent(lblHighScore, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRestart)
-                    .addComponent(lblStatus))
-                .addGap(24, 24, 24))
+        gmOverPanelLayout.setVerticalGroup(
+            gmOverPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 500, Short.MAX_VALUE)
+            .addGroup(gmOverPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(gmOverPanelLayout.createSequentialGroup()
+                    .addGap(111, 111, 111)
+                    .addComponent(jlblGameOver, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(240, Short.MAX_VALUE)))
+            .addGroup(gmOverPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(gmOverPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         boardPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -281,12 +322,60 @@ else {
         tile33.setOpaque(true);
         boardPanel.add(tile33);
 
+        lblScore.setText("jLabel2");
+
+        lblHighScore.setText("jLabel3");
+
+        lblStatus.setText("jLabel1");
+        lblStatus.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        btnRestart.setText("Restart");
+        btnRestart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestartActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
+        infoPanel.setLayout(infoPanelLayout);
+        infoPanelLayout.setHorizontalGroup(
+            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(infoPanelLayout.createSequentialGroup()
+                .addGap(56, 56, 56)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(infoPanelLayout.createSequentialGroup()
+                        .addComponent(lblScore)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblHighScore)
+                        .addGap(65, 65, 65))
+                    .addGroup(infoPanelLayout.createSequentialGroup()
+                        .addComponent(lblStatus)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRestart)
+                        .addGap(44, 44, 44))))
+        );
+        infoPanelLayout.setVerticalGroup(
+            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(infoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblScore)
+                    .addComponent(lblHighScore, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRestart)
+                    .addComponent(lblStatus))
+                .addGap(24, 24, 24))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(boardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(gmOverPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -294,6 +383,8 @@ else {
                 .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(gmOverPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -347,7 +438,10 @@ else {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel boardPanel;
     private javax.swing.JButton btnRestart;
+    private javax.swing.JPanel gmOverPanel;
     private javax.swing.JPanel infoPanel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jlblGameOver;
     private javax.swing.JLabel lblHighScore;
     private javax.swing.JLabel lblScore;
     private javax.swing.JLabel lblStatus;

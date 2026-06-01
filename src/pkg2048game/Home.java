@@ -8,16 +8,56 @@ package pkg2048game;
  *
  * @author i
  */
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 public class Home extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Home.class.getName());
 
-    /**
-     * Creates new form Home
-     */
+    private Clip clip;
+    private boolean musicPlaying = false;
+    
     public Home() {
         initComponents();
+        setLocationRelativeTo(null);
     }
+    
+    private void playMusic() {
+
+    try {
+
+        File file = new File("bgmusic.wav");
+
+        AudioInputStream audio =
+                AudioSystem.getAudioInputStream(file);
+
+        clip = AudioSystem.getClip();
+
+        clip.open(audio);
+
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+        musicPlaying = true;
+
+    }
+    catch(Exception e) {
+
+        e.printStackTrace();
+
+    }
+}
+    private void stopMusic() {
+
+    if(clip != null) {
+
+        clip.stop();
+
+        musicPlaying = false;
+    }
+}
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,6 +98,11 @@ public class Home extends javax.swing.JFrame {
         });
 
         btnMusik.setText("Play Music");
+        btnMusik.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMusikActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -117,6 +162,22 @@ this.dispose();
 
 
     }//GEN-LAST:event_btnPlayActionPerformed
+
+    private void btnMusikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMusikActionPerformed
+    if(!musicPlaying) {
+
+        playMusic();
+
+        btnMusik.setText("Pause Music");
+
+    }
+    else {
+
+        stopMusic();
+
+        btnMusik.setText("Play Music");
+    }
+    }//GEN-LAST:event_btnMusikActionPerformed
 
     /**
      * @param args the command line arguments
