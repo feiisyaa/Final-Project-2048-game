@@ -3,12 +3,14 @@ package pkg2048game;
 import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
 public class Game extends javax.swing.JFrame {
+    private javax.swing.JLayeredPane layeredPane;
     private GameBoard gameBoard;
     private int highScore = 0;
     
     public Game() {
     initComponents();
     gameBoard = new GameBoard();
+    setLocationRelativeTo(null);
 
     updateBoard();
     requestFocusInWindow();
@@ -36,6 +38,50 @@ else {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Game.class.getName());
 
+    private void setTileColor(JLabel label, int value) {
+
+    switch(value) {
+        case 0:
+            label.setBackground(new java.awt.Color(205, 193, 180));
+            break;
+        case 2:
+            label.setBackground(new java.awt.Color(238, 228, 218));
+            break;
+        case 4:
+            label.setBackground(new java.awt.Color(237, 224, 200));
+            break;
+        case 8:
+            label.setBackground(new java.awt.Color(242, 177, 121));
+            break;
+        case 16:
+            label.setBackground(new java.awt.Color(245, 149, 99));
+            break;
+        case 32:
+            label.setBackground(new java.awt.Color(246, 124, 95));
+            break;
+        case 64:
+            label.setBackground(new java.awt.Color(246, 94, 59));
+            break;
+        case 128:
+            label.setBackground(new java.awt.Color(237, 207, 114));
+            break;
+        case 256:
+            label.setBackground(new java.awt.Color(237, 204, 97));
+            break;
+        case 512:
+            label.setBackground(new java.awt.Color(237, 200, 80));
+            break;
+        case 1024:
+            label.setBackground(new java.awt.Color(237, 197, 63));
+            break;
+        case 2048:
+            label.setBackground(new java.awt.Color(237, 194, 46));
+            break;
+        default:
+            label.setBackground(new java.awt.Color(60, 58, 50));
+            break;
+    }}
+    
     private void updateBoard() {
 
     int[][] board = gameBoard.getBoard();
@@ -63,6 +109,7 @@ else {
     
                 );
             }
+            setTileColor(labels[i][j], board[i][j]);
         }
     }
 
@@ -94,6 +141,7 @@ else {
     lblHighScore.setText(
         "High Score: " + highScore
     );
+    
 }
    
 
@@ -164,7 +212,7 @@ else {
                         .addGap(65, 65, 65))
                     .addGroup(infoPanelLayout.createSequentialGroup()
                         .addComponent(lblStatus)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRestart)
                         .addGap(44, 44, 44))))
         );
@@ -175,7 +223,7 @@ else {
                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblScore)
                     .addComponent(lblHighScore, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRestart)
                     .addComponent(lblStatus))
@@ -183,6 +231,7 @@ else {
         );
 
         boardPanel.setBackground(new java.awt.Color(255, 255, 255));
+        boardPanel.setPreferredSize(new java.awt.Dimension(400, 500));
         boardPanel.setLayout(new java.awt.GridLayout(4, 4, 5, 5));
 
         tile00.setBackground(new java.awt.Color(204, 204, 204));
@@ -298,7 +347,7 @@ else {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnRestartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestartActionPerformed
     gameBoard.initializeBoard();
 
