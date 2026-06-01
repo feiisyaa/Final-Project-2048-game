@@ -51,6 +51,11 @@ public class Home extends javax.swing.JFrame {
         });
 
         btnPlay.setText("Start Game");
+        btnPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayActionPerformed(evt);
+            }
+        });
 
         btnMusik.setText("Play Music");
 
@@ -102,6 +107,16 @@ public class Home extends javax.swing.JFrame {
     private void btnTutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTutorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnTutorActionPerformed
+
+    private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
+Game game = new Game();
+
+game.setVisible(true);
+
+this.dispose();
+
+
+    }//GEN-LAST:event_btnPlayActionPerformed
 
     /**
      * @param args the command line arguments
