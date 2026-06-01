@@ -47,6 +47,24 @@ public class GameBoard {
     
     public void spawnTile() {
 
+    int emptyCount = 0;
+
+    for(int i = 0; i < 4; i++) {
+
+        for(int j = 0; j < 4; j++) {
+
+            if(board[i][j] == 0) {
+
+                emptyCount++;
+            }
+        }
+    }
+
+    if(emptyCount == 0) {
+
+        return;
+    }
+
     int row;
     int col;
 
@@ -60,13 +78,17 @@ public class GameBoard {
     int value;
 
     if(random.nextInt(10) < 9) {
+
         value = 2;
+
     } else {
+
         value = 4;
     }
 
     board[row][col] = value;
 }
+    
     public void moveLeft() {
         for(int i = 0; i < 4; i++) {
 
