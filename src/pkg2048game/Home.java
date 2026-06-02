@@ -23,39 +23,14 @@ public class Home extends javax.swing.JFrame {
         setLocationRelativeTo(null); 
     }
 
-    private void playMusic() {
-
-    try {
-
-        File file = new File("bgmusic.wav");
-
-        AudioInputStream audio =
-                AudioSystem.getAudioInputStream(file);
-
-        clip = AudioSystem.getClip();
-
-        clip.open(audio);
-
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-
-        musicPlaying = true;
-
-    }
-    catch(Exception e) {
-
-        e.printStackTrace();
-
-    }
+private void playMusic() {
+    SoundManager.playBackgroundMusic();
+    musicPlaying = true;
 }
     
-    private void stopMusic() {
-
-    if(clip != null) {
-
-        clip.stop();
-
-        musicPlaying = false;
-    }
+ private void stopMusic() {
+    SoundManager.stopBackgroundMusic();
+    musicPlaying = false;
 }
     
     /**
@@ -148,7 +123,9 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTutorActionPerformed
-        // TODO add your handling code here:
+       GuideBook guide = new GuideBook();
+       guide.setVisible(true);
+       
     }//GEN-LAST:event_btnTutorActionPerformed
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed

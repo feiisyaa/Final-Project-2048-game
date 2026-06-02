@@ -1,14 +1,31 @@
 package pkg2048game;
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
+import javax.swing.JOptionPane;
 import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
+
+
 public class Game extends javax.swing.JFrame {
     private javax.swing.JLayeredPane layeredPane;
     private GameBoard gameBoard;
     private int highScore = 0;
+    private boolean gameOverShown = false;
+    private boolean winShown = false;
     
     public Game() {
     initComponents();
+    
+
     gameBoard = new GameBoard();
     setLocationRelativeTo(null);
 
@@ -82,6 +99,53 @@ else {
             break;
     }}
     
+    private void playGameOverSound() {
+        
+    try {
+
+        File file = new File("gameover.wav");
+
+        AudioInputStream audio =
+                AudioSystem.getAudioInputStream(file);
+
+        Clip clip = AudioSystem.getClip();
+
+        clip.open(audio);
+        FloatControl gainControl =
+    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+gainControl.setValue(6.0f); // tambah volume
+        clip.start();
+
+    } catch(Exception e) {
+
+        e.printStackTrace();
+    }
+}
+    
+    private void playWinSound() {
+
+    try {
+
+        File file = new File("win.wav");
+
+        AudioInputStream audio =
+                AudioSystem.getAudioInputStream(file);
+
+        Clip clip = AudioSystem.getClip();
+
+        clip.open(audio);
+
+        clip.start();
+
+    } catch(Exception e) {
+
+        e.printStackTrace();
+    }
+}
+    
+    
+
     private void updateBoard() {
 
     int[][] board = gameBoard.getBoard();
@@ -119,12 +183,23 @@ else {
     if(gameBoard.isWin()) {
 
         lblStatus.setText("YOU WIN!");
+        if(!winShown) {
+
+        winShown = true;
+
+        showWin();
+    }
     }
 
     else if(gameBoard.isGameOver()) {
 
         lblStatus.setText("GAME OVER");
+        if(!gameOverShown) {
 
+        gameOverShown = true;
+        showGameOver();
+
+    }
     }
 
     else {
@@ -140,9 +215,82 @@ else {
 
     lblHighScore.setText(
         "High Score: " + highScore
-    );
-    
+    );   
 }
+    private void showGameOver() {
+    SoundManager.stopBackgroundMusic();
+    playGameOverSound();
+    Object[] options = {
+        "Play Again",
+        "Exit"
+    };
+
+    int choice = JOptionPane.showOptionDialog(
+        this,
+        "<html><div style='text-align:center;'>"
+        + "<h1>GAME OVER</h1>"
+        + "<br>Your Score : " + gameBoard.getScore()
+        + "</div></html>",
+        "2048 Game",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.ERROR_MESSAGE,
+        null,
+        options,
+        options[0]
+    );
+
+    if(choice == 0) {
+
+        gameBoard.initializeBoard();
+        SoundManager.playBackgroundMusic();
+        gameOverShown = false;
+        winShown = false;
+        updateBoard();
+        requestFocusInWindow();
+
+    } else {
+
+        System.exit(0);
+
+    }
+}
+   private void showWin() {
+    SoundManager.stopBackgroundMusic();
+    playWinSound();
+
+    Object[] options = {
+        "Continue",
+        "Restart"
+    };
+
+    int choice = JOptionPane.showOptionDialog(
+        this,
+        "<html><div style='text-align:center;'>"
+        + "<h1>✅ YOU WIN!</h1>"
+        + "<br>You reached 2048!"
+        + "<br><br>Score : " + gameBoard.getScore()
+        + "</div></html>",
+        "2048 Game",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.INFORMATION_MESSAGE,
+        null,
+        options,
+        options[0]
+    );
+
+    if(choice == 1) {
+
+        gameBoard.initializeBoard();
+        SoundManager.playBackgroundMusic();
+        winShown = false;
+        gameOverShown = false;
+
+        updateBoard();
+
+        requestFocusInWindow();
+    }
+}
+    
    
 
     /**
@@ -350,7 +498,8 @@ else {
     
     private void btnRestartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestartActionPerformed
     gameBoard.initializeBoard();
-
+    gameOverShown = false;
+    winShown = false;
     updateBoard();
 
     requestFocusInWindow();
@@ -418,3 +567,5 @@ else {
     private javax.swing.JLabel tile33;
     // End of variables declaration//GEN-END:variables
 }
+
+
