@@ -5,7 +5,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
-
+import java.io.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,31 +21,30 @@ public class Game extends javax.swing.JFrame {
     private int highScore = 0;
     private boolean gameOverShown = false;
     private boolean winShown = false;
+    private boolean reached128 = false;
     
     public Game() {
     initComponents();
     
 
-    gameBoard = new GameBoard();
+    gameBoard = new GameBoard();       
+    loadHighScore();
     setLocationRelativeTo(null);
 
     updateBoard();
     requestFocusInWindow();
 
     setFocusable(true);
+    
     if(gameBoard.isWin()) {
 
-    lblStatus.setText("YOU WIN!");
+    lblStatus.setText("YOU WIN!");}
 
-}
+    else if(gameBoard.isGameOver()) {
 
-else if(gameBoard.isGameOver()) {
+    lblStatus.setText("GAME OVER");}
 
-    lblStatus.setText("GAME OVER");
-
-}
-
-else {
+    else {
 
     lblStatus.setText("Playing");
 
@@ -99,6 +98,28 @@ else {
             break;
     }}
     
+    
+    private void play256Sound() {
+
+    try {
+
+        File file = new File("256.wav");
+
+        AudioInputStream audio =
+                AudioSystem.getAudioInputStream(file);
+
+        Clip clip = AudioSystem.getClip();
+
+        clip.open(audio);
+
+        clip.start();
+
+    } catch(Exception e) {
+
+        e.printStackTrace();
+    }
+}
+    
     private void playGameOverSound() {
         
     try {
@@ -112,9 +133,9 @@ else {
 
         clip.open(audio);
         FloatControl gainControl =
-    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
-gainControl.setValue(6.0f); // tambah volume
+        gainControl.setValue(6.0f); // tambah volume
         clip.start();
 
     } catch(Exception e) {
@@ -161,7 +182,13 @@ gainControl.setValue(6.0f); // tambah volume
     for(int i = 0; i < 4; i++) {
 
         for(int j = 0; j < 4; j++) {
+            
+            if(board[i][j] == 128 && !reached128) {
 
+            reached128 = true;
+
+            show256Message();}
+            
             if(board[i][j] == 0) {
 
                 labels[i][j].setText("");
@@ -211,6 +238,7 @@ gainControl.setValue(6.0f); // tambah volume
     if(gameBoard.getScore() > highScore) {
 
         highScore = gameBoard.getScore();
+        saveHighScore();
     }
 
     lblHighScore.setText(
@@ -218,8 +246,10 @@ gainControl.setValue(6.0f); // tambah volume
     );   
 }
     private void showGameOver() {
-    SoundManager.stopBackgroundMusic();
+    SoundManager.pauseBackgroundMusic();
     playGameOverSound();
+    if(SoundManager.isMusicEnabled()) {
+    SoundManager.resumeBackgroundMusic();}
     Object[] options = {
         "Play Again",
         "Exit"
@@ -242,7 +272,8 @@ gainControl.setValue(6.0f); // tambah volume
     if(choice == 0) {
 
         gameBoard.initializeBoard();
-        SoundManager.playBackgroundMusic();
+        if(SoundManager.isMusicEnabled()) {
+        SoundManager.resumeBackgroundMusic();}
         gameOverShown = false;
         winShown = false;
         updateBoard();
@@ -255,9 +286,10 @@ gainControl.setValue(6.0f); // tambah volume
     }
 }
    private void showWin() {
-    SoundManager.stopBackgroundMusic();
+    SoundManager.pauseBackgroundMusic();
     playWinSound();
-
+    if(SoundManager.isMusicEnabled()) {
+    SoundManager.resumeBackgroundMusic();}
     Object[] options = {
         "Continue",
         "Restart"
@@ -281,7 +313,8 @@ gainControl.setValue(6.0f); // tambah volume
     if(choice == 1) {
 
         gameBoard.initializeBoard();
-        SoundManager.playBackgroundMusic();
+        if(SoundManager.isMusicEnabled()) {
+        SoundManager.resumeBackgroundMusic();}
         winShown = false;
         gameOverShown = false;
 
@@ -290,8 +323,59 @@ gainControl.setValue(6.0f); // tambah volume
         requestFocusInWindow();
     }
 }
-    
-   
+    private void show256Message() {
+    SoundManager.pauseBackgroundMusic();
+    play256Sound();
+
+    JOptionPane.showMessageDialog(
+        this,
+        "<html><center>"
+        + "<h1>✨ AMAZING ✨</h1>"
+        + "<br>You reached 128!"
+        + "</center></html>",
+        "Achievement",
+        JOptionPane.INFORMATION_MESSAGE       
+    );
+    if(SoundManager.isMusicEnabled()) {
+        SoundManager.resumeBackgroundMusic();
+    }
+}
+    private void loadHighScore() {
+
+    try {
+
+        File file = new File("highscore.txt");
+
+        BufferedReader br =
+                new BufferedReader(new FileReader(file));
+
+        highScore = Integer.parseInt(br.readLine());
+
+        br.close();
+
+    } catch(Exception e) {
+
+        highScore = 0;
+
+    }
+}
+   private void saveHighScore() {
+
+    try {
+
+        FileWriter writer =
+                new FileWriter("highscore.txt");
+
+        writer.write(String.valueOf(highScore));
+
+        writer.close();
+
+    } catch(Exception e) {
+
+        e.printStackTrace();
+
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -332,13 +416,19 @@ gainControl.setValue(6.0f); // tambah volume
             }
         });
 
+        lblScore.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
         lblScore.setText("jLabel2");
 
+        lblHighScore.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
         lblHighScore.setText("jLabel3");
 
+        lblStatus.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
         lblStatus.setText("jLabel1");
         lblStatus.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        btnRestart.setBackground(new java.awt.Color(102, 102, 255));
+        btnRestart.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
+        btnRestart.setForeground(new java.awt.Color(255, 255, 255));
         btnRestart.setText("Restart");
         btnRestart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -357,25 +447,25 @@ gainControl.setValue(6.0f); // tambah volume
                         .addComponent(lblScore)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblHighScore)
-                        .addGap(65, 65, 65))
+                        .addGap(49, 49, 49))
                     .addGroup(infoPanelLayout.createSequentialGroup()
                         .addComponent(lblStatus)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRestart)
-                        .addGap(44, 44, 44))))
+                        .addGap(59, 59, 59))))
         );
         infoPanelLayout.setVerticalGroup(
             infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(infoPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblScore)
                     .addComponent(lblHighScore, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRestart)
-                    .addComponent(lblStatus))
-                .addGap(24, 24, 24))
+                    .addComponent(lblStatus)
+                    .addComponent(btnRestart))
+                .addGap(30, 30, 30))
         );
 
         boardPanel.setBackground(new java.awt.Color(255, 255, 255));
