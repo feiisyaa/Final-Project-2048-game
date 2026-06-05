@@ -1,19 +1,15 @@
 package pkg2048game;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class GuideBook extends JFrame {
-
     public GuideBook() {
 
         setTitle("Guide Book");
         setSize(1000, 700);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
         getContentPane().setBackground(new Color(24, 24, 24));
-
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(new Color(24, 24, 24));
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -26,7 +22,6 @@ public class GuideBook extends JFrame {
         JLabel title = new JLabel(
                 "<html><center>Cara Bermain <font color='#5C54FF'>2048</font></center></html>"
         );
-
         title.setFont(new Font("Segoe UI", Font.BOLD, 42));
         title.setForeground(Color.WHITE);
 
@@ -40,7 +35,6 @@ public class GuideBook extends JFrame {
         // ===== Keyboard =====
         JPanel keyboardPanel = new JPanel();
         keyboardPanel.setBackground(new Color(35, 35, 35));
-
         keyboardPanel.setBorder(
                 BorderFactory.createTitledBorder(
                         BorderFactory.createLineBorder(Color.GRAY),
@@ -51,7 +45,6 @@ public class GuideBook extends JFrame {
                         Color.WHITE
                 )
         );
-
         JLabel keyboardLabel = new JLabel(
                 "<html><center>"
                 + "<div style='font-size:50px'>↑</div>"
@@ -62,13 +55,11 @@ public class GuideBook extends JFrame {
         );
 
         keyboardLabel.setForeground(Color.WHITE);
-
         keyboardPanel.add(keyboardLabel);
 
         // ===== Board Example =====
         JPanel boardPanel = new JPanel(new GridLayout(4, 4, 8, 8));
         boardPanel.setBackground(new Color(187, 173, 160));
-
         boardPanel.setBorder(
                 BorderFactory.createTitledBorder(
                         BorderFactory.createLineBorder(Color.GRAY),
@@ -79,16 +70,11 @@ public class GuideBook extends JFrame {
                         Color.WHITE
                 )
         );
-
         for (int i = 0; i < 16; i++) {
-
             JPanel tile = new JPanel(new BorderLayout());
-
             tile.setBackground(new Color(205, 193, 180));
-
-            boardPanel.add(tile);
-        }
-
+            boardPanel.add(tile);}
+        
         JPanel tile2 = (JPanel) boardPanel.getComponent(1);
         tile2.setBackground(new Color(238, 228, 218));
 
@@ -139,33 +125,25 @@ public class GuideBook extends JFrame {
 
         // ================= BACK BUTTON =================
         JButton btnBack = new JButton("Back");
-
         btnBack.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnBack.setBackground(new Color(92, 84, 255));
         btnBack.setForeground(Color.WHITE);
         btnBack.setFocusPainted(false);
-
         btnBack.addActionListener(e -> dispose());
 
         // ================= ADD COMPONENT =================
         mainPanel.add(header);
         mainPanel.add(visualSection);
         mainPanel.add(infoSection);
-
         JScrollPane scrollPane = new JScrollPane(mainPanel);
-
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-
         add(scrollPane, BorderLayout.CENTER);
         add(btnBack, BorderLayout.SOUTH);
     }
 
     private JPanel createCard(String title, String description) {
-
         JPanel card = new JPanel(new BorderLayout());
-
         card.setBackground(new Color(35, 35, 35));
-
         card.setBorder(
                 BorderFactory.createEmptyBorder(
                         20, 20, 20, 20
@@ -173,9 +151,7 @@ public class GuideBook extends JFrame {
         );
 
         JLabel lblTitle = new JLabel(title);
-
         lblTitle.setForeground(Color.WHITE);
-
         lblTitle.setFont(
                 new Font(
                         "Segoe UI",
@@ -183,15 +159,12 @@ public class GuideBook extends JFrame {
                         20
                 )
         );
-
         JLabel lblDesc = new JLabel(
                 "<html><body style='width:250px'>" +
                 description +
                 "</body></html>"
         );
-
         lblDesc.setForeground(Color.LIGHT_GRAY);
-
         lblDesc.setFont(
                 new Font(
                         "Segoe UI",
@@ -199,10 +172,7 @@ public class GuideBook extends JFrame {
                         15
                 )
         );
-
         card.add(lblTitle, BorderLayout.NORTH);
         card.add(lblDesc, BorderLayout.CENTER);
-
         return card;
-    }
-}
+    }}

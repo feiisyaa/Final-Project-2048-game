@@ -30,32 +30,25 @@ public class Game extends javax.swing.JFrame {
     gameBoard = new GameBoard();       
     loadHighScore();
     setLocationRelativeTo(null);
-
     updateBoard();
     requestFocusInWindow();
-
     setFocusable(true);
     
     if(gameBoard.isWin()) {
-
-    lblStatus.setText("YOU WIN!");}
+        lblStatus.setText("YOU WIN!");}
 
     else if(gameBoard.isGameOver()) {
-
-    lblStatus.setText("GAME OVER");}
+        lblStatus.setText("GAME OVER");}
 
     else {
-
-    lblStatus.setText("Playing");
-
+         lblStatus.setText("Playing");
 }
     setFocusable(true);
     }
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Game.class.getName());
+private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Game.class.getName());
 
-    private void setTileColor(JLabel label, int value) {
-
+private void setTileColor(JLabel label, int value) {
     switch(value) {
         case 0:
             label.setBackground(new java.awt.Color(205, 193, 180));
@@ -99,23 +92,18 @@ public class Game extends javax.swing.JFrame {
     }}
     
     
-    private void play256Sound() {
-
+ private void play256Sound() {
     try {
-
         File file = new File("256.wav");
 
         AudioInputStream audio =
                 AudioSystem.getAudioInputStream(file);
 
         Clip clip = AudioSystem.getClip();
-
         clip.open(audio);
-
-        clip.start();
-
-    } catch(Exception e) {
-
+        clip.start();} 
+    
+    catch(Exception e) {
         e.printStackTrace();
     }
 }
@@ -165,9 +153,7 @@ public class Game extends javax.swing.JFrame {
     }
 }
     
-    
-
-    private void updateBoard() {
+private void updateBoard() {
 
     int[][] board = gameBoard.getBoard();
 
@@ -180,76 +166,56 @@ public class Game extends javax.swing.JFrame {
     };
 
     for(int i = 0; i < 4; i++) {
-
-        for(int j = 0; j < 4; j++) {
-            
+        for(int j = 0; j < 4; j++) {  
             if(board[i][j] == 128 && !reached128) {
-
-            reached128 = true;
-
-            show256Message();}
+                reached128 = true;
+                show256Message();}
             
             if(board[i][j] == 0) {
-
-                labels[i][j].setText("");
-
-            } else {
-
+                labels[i][j].setText("");} 
+            else {
                 labels[i][j].setText(
                     String.valueOf(board[i][j])
-    
                 );
             }
-            setTileColor(labels[i][j], board[i][j]);
-        }
-    }
+            setTileColor(labels[i][j], board[i][j]);}}
 
     lblScore.setText(
         "Score: " + gameBoard.getScore());
     
     if(gameBoard.isWin()) {
-
         lblStatus.setText("YOU WIN!");
+        
         if(!winShown) {
-
-        winShown = true;
-
-        showWin();
-    }
-    }
+            winShown = true;
+            showWin();}}
 
     else if(gameBoard.isGameOver()) {
-
         lblStatus.setText("GAME OVER");
+        
         if(!gameOverShown) {
-
-        gameOverShown = true;
-        showGameOver();
-
-    }
-    }
-
-    else {
-
-        lblStatus.setText("Playing");
-    }
+            gameOverShown = true;
+            showGameOver();}}
+    
+        else {
+        lblStatus.setText("Playing");}
 
     // skor trtinggi
     if(gameBoard.getScore() > highScore) {
-
         highScore = gameBoard.getScore();
-        saveHighScore();
-    }
+        saveHighScore();}
 
     lblHighScore.setText(
         "High Score: " + highScore
-    );   
-}
-    private void showGameOver() {
+    );}
+    
+private void showGameOver() {
     SoundManager.pauseBackgroundMusic();
     playGameOverSound();
+    
     if(SoundManager.isMusicEnabled()) {
-    SoundManager.resumeBackgroundMusic();}
+        SoundManager.resumeBackgroundMusic();}
+    
     Object[] options = {
         "Play Again",
         "Exit"
@@ -282,15 +248,15 @@ public class Game extends javax.swing.JFrame {
     } else {
 
         System.exit(0);
+    }}
 
-    }
-}
-   private void showWin() {
+private void showWin() {
     SoundManager.pauseBackgroundMusic();
     playWinSound();
+    
     if(SoundManager.isMusicEnabled()) {
-    SoundManager.resumeBackgroundMusic();}
-    Object[] options = {
+        SoundManager.resumeBackgroundMusic();}
+        Object[] options = {
         "Continue",
         "Restart"
     };
@@ -311,19 +277,16 @@ public class Game extends javax.swing.JFrame {
     );
 
     if(choice == 1) {
-
         gameBoard.initializeBoard();
         if(SoundManager.isMusicEnabled()) {
         SoundManager.resumeBackgroundMusic();}
         winShown = false;
         gameOverShown = false;
-
         updateBoard();
-
         requestFocusInWindow();
-    }
-}
-    private void show256Message() {
+    }}
+
+private void show256Message() {
     SoundManager.pauseBackgroundMusic();
     play256Sound();
 
@@ -336,52 +299,33 @@ public class Game extends javax.swing.JFrame {
         "Achievement",
         JOptionPane.INFORMATION_MESSAGE       
     );
+    
     if(SoundManager.isMusicEnabled()) {
         SoundManager.resumeBackgroundMusic();
-    }
-}
-    private void loadHighScore() {
-
+    }}
+    
+private void loadHighScore() {
     try {
-
         File file = new File("highscore.txt");
-
         BufferedReader br =
                 new BufferedReader(new FileReader(file));
-
         highScore = Integer.parseInt(br.readLine());
-
         br.close();
-
-    } catch(Exception e) {
-
+    }
+    catch(Exception e) {
         highScore = 0;
+    }}
 
-    }
-}
-   private void saveHighScore() {
-
+private void saveHighScore() {
     try {
-
-        FileWriter writer =
-                new FileWriter("highscore.txt");
-
+        FileWriter writer = new FileWriter("highscore.txt");
         writer.write(String.valueOf(highScore));
-
         writer.close();
-
-    } catch(Exception e) {
-
-        e.printStackTrace();
-
     }
-}
+    catch(Exception e) {
+        e.printStackTrace();
+    }}
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -591,23 +535,17 @@ public class Game extends javax.swing.JFrame {
     gameOverShown = false;
     winShown = false;
     updateBoard();
-
-    requestFocusInWindow();
-        
+    requestFocusInWindow();      
     }//GEN-LAST:event_btnRestartActionPerformed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_LEFT) {
-
-        gameBoard.moveLeft();
-
-        updateBoard();
+            gameBoard.moveLeft();
+            updateBoard();
     }
         if(evt.getKeyCode() == KeyEvent.VK_RIGHT) {
-
-        gameBoard.moveRight();
-
-        updateBoard();
+            gameBoard.moveRight();
+            updateBoard();
     }
         if(evt.getKeyCode() == KeyEvent.VK_UP) {
 
